@@ -6,7 +6,7 @@ pub fn HomePage() -> impl IntoView {
     view! {
         <div class="animate-in fade-in z-20">
             <h1 class="font-bold text-4xl">"Bienvenid@ a "
-                <span class="font-bold text-cyan-500 italic">"Rocio"</span>
+                <span class="font-extrabold text-cyan-500 italic">"GORDIS"</span>
             </h1>
             <h2 class="text-xl">"Te ayudamos a que todo este en orden"</h2>
             <div class="flex gap-2 mt-[10px] flex justify-center items-center">

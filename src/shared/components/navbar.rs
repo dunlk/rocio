@@ -1,4 +1,4 @@
-use leptos::{html::nav, prelude::*};
+use leptos::prelude::*;
 use leptos_router::{components::A, hooks::use_location};
 
 #[component]
@@ -37,4 +37,3 @@ pub fn Navbar() -> impl IntoView {
         </div>
     }
 }
-
