@@ -1,3 +1,4 @@
+use crate::features::activities::pages::page::ActivitiesPage;
 use crate::features::{home::page::HomePage, students::page::StudentsPage};
 use crate::shared::components::navbar::Navbar;
 use leptos::prelude::*;
@@ -18,6 +19,7 @@ pub fn AppLayout() -> impl IntoView {
                 <Routes fallback=|| view! { <p>"Vista no encontrada"</p> }>
                     <Route path=path!("/") view=|| HomePage()/>
                     <Route path=path!("/students") view=|| StudentsPage()/>
+                    <Route path=path!("/activities") view=|| ActivitiesPage()/>
                 </Routes>
             </main>
         </div>

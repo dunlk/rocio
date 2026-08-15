@@ -16,7 +16,7 @@ pub fn HomePage() -> impl IntoView {
                     </A>
                 </div>
                 <div class="bg-pink-600/70 rounded-3xl p-4 font-bold">
-                    <A href="/students">
+                    <A href="/activities">
                         "Ver actividades"
                     </A>
                 </div>

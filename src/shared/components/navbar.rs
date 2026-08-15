@@ -27,7 +27,14 @@ pub fn Navbar() -> impl IntoView {
                     <A href="/students">"Alumnos"</A>
                 </li>
 
-                <li class="p-4 rounded-4xl">"Actividades"</li>
+                <li
+                    class="p-4 rounded-4xl transition-colors duration-300 ease-in-out"
+                    class=(
+                        "bg-pink-400/60", move || location.pathname.get() == "/activities"
+                    )
+                >
+                    <A href="/activities">"Actividades"</A>
+                </li>
             </ul>
         </div>
     }
