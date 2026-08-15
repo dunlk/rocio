@@ -1,7 +1,9 @@
 CREATE TABLE IF NOT EXISTS activities (
-  id INTEGER PRIMERY KEY AUTOINCREMENT,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   description TEXT,
+  activity_type TEXT NOT NULL
+    CHECK (type IN ('monthly', 'occacional')),
   amount REAL NOT NULL,
   activities_date DATE,
   due_date DATE,
