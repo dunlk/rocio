@@ -16,6 +16,8 @@ tw_merge = { version = "0.1.21", features = ["variant"] }
 icons = { version = "0.18.3", features = ["leptos"] }
 leptos_ui = "0.3.22"
 leptos_router = "0.8.15"
+web-sys = { version = "0.3", features = ["console"] }
+
 
 [workspace]
 members = ["src-tauri"]

@@ -11,7 +11,7 @@ use leptos_router::{
 pub fn AppLayout() -> impl IntoView {
     let location = use_location();
     view! {
-        <div class="relative text-center overflow-hidden text-white bg-slate-900 flex items-center justify-center flex-col container h-screen pt-[20px]">
+        <div class="text-center overflow-hidden text-white bg-slate-900 flex items-center justify-center flex-col container h-screen pt-[20px]">
 
             <Navbar/>
             <main>

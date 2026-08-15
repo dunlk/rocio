@@ -1,9 +1,6 @@
-use sqlx::{Execute, SqlitePool};
+use sqlx::SqlitePool;
 
-use crate::features::students::{
-    self,
-    models::{CreateStudent, UpdateStudent},
-};
+use crate::features::students::models::{CreateStudent, UpdateStudent};
 
 use super::models::Student;
 
