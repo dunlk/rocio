@@ -6,7 +6,7 @@ pub fn StudentForm() -> impl IntoView {
     let (last_name, set_last_name) = signal(String::new());
 
     view! {
-        <h1 class="animate-in fade-in text-3xl font-bold">Registrar alumno</h1>
+        <h1 class="animate-in fade-in text-3xl font-bold z-10">Registrar alumno</h1>
 
         <div class="animate-in fade-in bg-black/30 mt-3 backdrop-blur-md rounded-3xl p-3 shadow-black/20 shadow-lg ">
             <div class="p-3 rounded-3xl text-md">

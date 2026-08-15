@@ -10,7 +10,7 @@ pub fn Navbar() -> impl IntoView {
             <ul class="flex gap-1 items-center justify-between">
                 <li
 
-                    class="p-4 rounded-4xl transition-colors duration-300 ease-in-out"
+                    class="p-4 rounded-4xl transition-colors duration-700 ease-in-out"
                     class=(
                         "bg-pink-400/60", move || location.pathname.get() == "/"
                     )
@@ -18,7 +18,7 @@ pub fn Navbar() -> impl IntoView {
                     <A href="/">"Inicio"</A>
                 </li>
                 <li
-                    class="p-4 rounded-4xl transition-colors duration-300 ease-in-out"
+                    class="p-4 rounded-4xl transition-colors duration-700 ease-in-out"
 
                     class=(
                         "bg-pink-400/60", move || location.pathname.get() == "/students"
@@ -28,7 +28,7 @@ pub fn Navbar() -> impl IntoView {
                 </li>
 
                 <li
-                    class="p-4 rounded-4xl transition-colors duration-300 ease-in-out"
+                    class="p-4 rounded-4xl transition-colors duration-700 ease-in-out"
                     class=(
                         "bg-pink-400/60", move || location.pathname.get() == "/activities"
                     )
