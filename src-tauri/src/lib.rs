@@ -5,6 +5,7 @@ use database::create_pool;
 use database::migrations::run_migrations;
 use tauri::Manager;
 
+use features::activities::commands::*;
 use features::students::commands::{create_student, delete_student, get_students, update_student};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -45,7 +46,11 @@ pub fn run() {
             get_students,
             create_student,
             update_student,
-            delete_student
+            delete_student,
+            create_activity,
+            get_activities,
+            update_activity,
+            delete_activity
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
