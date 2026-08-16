@@ -79,7 +79,7 @@ pub async fn update_student(
 pub async fn delete_student(pool: &SqlitePool, id: i64) -> Result<(), sqlx::Error> {
     sqlx::query(
         r#"
-            DELETE students
+            DELETE FROM students
             WHERE id = ?
         "#,
     )

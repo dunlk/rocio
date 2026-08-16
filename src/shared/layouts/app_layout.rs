@@ -19,7 +19,7 @@ pub fn AppLayout() -> impl IntoView {
 
     let pink_position = move || match location.pathname.get().as_str() {
         "/" => "-translate-x-[800px] -translate-y-[1800px]",
-        "/students" => "-translate-x-[400px] -translate-y-[1800px]",
+        "/students" => "-translate-x-[40%] -translate-y-[1800px]",
         "/activities" => "translate-x-[0px] -translate-y-[1700px]",
         _ => "-translate-x-[800px] -translate-y-[1700px]",
     };

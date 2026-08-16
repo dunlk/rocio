@@ -22,6 +22,8 @@ pub fn StudentForm(
             match create_student(first_name, last_name).await {
                 Ok(_) => {
                     set_active_register_student.set(false);
+                    set_first_name.set(String::new());
+                    set_last_name.set(String::new());
                     refresh_students.run(());
                 }
                 Err(error) => {
@@ -47,7 +49,8 @@ pub fn StudentForm(
                 <input
                     class="outline-none border-1 border-cyan-600 focus:border-pink-600/80 ml-1 focus:border-3  transition-all focus:bg-cyan-400/30 bg-cyan-400/10 rounded-3xl p-3"
                     type="text"
-                    value=move || first_name.get()
+                    required
+                    prop:value=move || first_name.get()
                     on:input=move |ev| { set_first_name.set(event_target_value(&ev)) }
                 />
             </div>
@@ -58,20 +61,21 @@ pub fn StudentForm(
                       focus:bg-cyan-400/20 focus:border-pink-600/80 bg-cyan-400/10 rounded-3xl p-3"
                     type="text"
                     prop:value=move || last_name.get()
+                    required
                     on:input=move |ev| {
                         set_last_name.set(event_target_value(&ev));
                     }
                 />
             </div>
-            <div class="flex gap-2">
+            <div class="flex gap-2 font-bold">
                 <button
-                    class="bg-green-400/40 rounded-3xl px-5 mx-auto py-2 whitespace-nowrap"
+                    class="bg-green-400/40 rounded-3xl px-5 mx-auto py-3 whitespace-nowrap"
                     on:click= handle_create_student
                 >
                     "Crear alumno"
                 </button>
                 <button
-                    class="bg-red-400/40 rounded-3xl px-5 mx-auto py-2 whitespace-nowrap"
+                    class="bg-red-500/40 rounded-3xl px-5 mx-auto py-3 whitespace-nowrap"
                     on:click= handle_cancel
                 >
                     "Cancelar"

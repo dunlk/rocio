@@ -24,6 +24,7 @@ pub fn run() {
             println!("Database: {}", database_path.display());
 
             let pool = tauri::async_runtime::block_on(async {
+                println!("Database: {}", database_path.display());
                 let pool = create_pool(&database_path)
                     .await
                     .expect("Error al conectarse a SQLite");
