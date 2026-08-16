@@ -26,7 +26,11 @@ pub async fn get_students() -> Result<Vec<Student>, String> {
     from_value(result).map_err(|error| error.to_string())
 }
 
-pub async fn create_student(data: CreateStudent) -> Result<Student, String> {
+pub async fn create_student(first_name: String, last_name: String) -> Result<Student, String> {
+    let data = CreateStudent {
+        first_name,
+        last_name,
+    };
     let args = CreateStudentArgs { data };
 
     let args = to_value(&args).map_err(|error| error.to_string())?;
