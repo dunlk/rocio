@@ -8,8 +8,13 @@ use leptos_router::{
     path,
 };
 
+struct modal {
+    active_register_student: bool,
+}
+
 #[component]
 pub fn AppLayout() -> impl IntoView {
+    let (active_register_student, set_active_register_student) = signal(false);
     let location = use_location();
 
     let pink_position = move || match location.pathname.get().as_str() {
@@ -25,32 +30,51 @@ pub fn AppLayout() -> impl IntoView {
         "/activities" => "-translate-x-[400px]",
         _ => "translate-x-[0px]",
     };
-    view! {
-        <div class="text-center overflow-hidden text-white bg-slate-900 flex items-center justify-center flex-col container h-screen pt-[20px]">
 
-            <Navbar/>
-            <main>
+    Effect::new(move |_| {
+        if location.pathname.get() != "/students" {
+            set_active_register_student.set(false)
+        }
+    });
+    view! {
+        <div class="text-center overflow-hidden text-white bg-slate-900 flex items-center justify-center flex-col h-screen">
+
+            <Navbar
+                set_active_register_student=set_active_register_student
+                active_register_student=active_register_student
+            />
+            <main class="w-full h-screen flex flex-col justify-center items-center">
                 <Routes fallback=|| view! { <p>"Vista no encontrada"</p> }>
-                    <Route path=path!("/") view=|| HomePage()/>
-                    <Route path=path!("/students") view=|| StudentsPage()/>
-                    <Route path=path!("/activities") view=|| ActivitiesPage()/>
+                    <Route path=path!("/") view=|| HomePage() />
+                    <Route
+                        path=path!("/students")
+                        view=move || {
+                            view! {
+                                <StudentsPage
+                                    active_register_student=active_register_student
+                                    set_active_register_student=set_active_register_student
+                                />
+                            }
+                        }
+                    />
+                    <Route path=path!("/activities") view=|| ActivitiesPage() />
                 </Routes>
             </main>
         </div>
-        <div
-            class=move || format!(
+        <div class=move || {
+            format!(
                 "blur-[300px] z-0 absolute aspect-square w-[1000px] rounded-full bg-pink-500 \
                 transition-transform duration-700 ease-in-out {}",
-                pink_position()
+                pink_position(),
             )
-        ></div>
+        }></div>
 
-        <div
-            class=move || format!(
-                        "blur-[300px] z-0 transition-transform absolute \
+        <div class=move || {
+            format!(
+                "blur-[300px] z-0 transition-transform absolute \
                         aspect-square w-[1000px] rounded-full bg-cyan-500 duration-700 {}",
-                        cyan_position()
+                cyan_position(),
             )
-        ></div>
+        }></div>
     }
 }

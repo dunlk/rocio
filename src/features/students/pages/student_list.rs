@@ -25,53 +25,42 @@ pub fn StudentList() -> impl IntoView {
 
     view! {
         <div>
-            <h2 class="animate-in fade-in text-3xl">
-                "Estudiantes"
-            </h2>
+            <h2 class="animate-in fade-in text-3xl">"Estudiantes"</h2>
 
             {move || {
                 if loading.get() {
-                    view! {
-                        <p>"Cargando..."</p>
-                    }.into_any()
-
+                    view! { <p>"Cargando..."</p> }.into_any()
                 } else if students.get().is_empty() {
-                    view! {
-                        <p class="text-xl">"No tienes estudiantes registrados"</p>
-                    }.into_any()
 
+                    view! { <p class="text-xl">"No tienes estudiantes registrados"</p> }
+                        .into_any()
                 } else {
+
                     view! {
                         <For
                             each=move || students.get()
                             key=|student| student.id
                             children=move |student| {
-                                view! {
-                                    <p>
-                                        {student.first_name}
-                                        " "
-                                        {student.last_name}
-                                    </p>
-                                }
+                                view! { <p>{student.first_name} " " {student.last_name}</p> }
                             }
                         />
-                    }.into_any()
+                    }
+                        .into_any()
                 }
             }}
-            // <For
-            //     each=move || students.get()
-            //     key=|student| student.id
-            //     children=move |student| {
-            //         view! {
-            //             <p>
-            //                 {student.first_name}
-            //                 " "
-            //                 {student.last_name}
-            //             </p>
-            //         }
-            //     }
-            // />
-
+        // <For
+        // each=move || students.get()
+        // key=|student| student.id
+        // children=move |student| {
+        // view! {
+        // <p>
+        // {student.first_name}
+        // " "
+        // {student.last_name}
+        // </p>
+        // }
+        // }
+        // />
         </div>
     }
 }
