@@ -15,6 +15,12 @@ struct CreateActivityArgs {
     data: CreateActivity,
 }
 
+#[derive(Serialize)]
+struct UpdateActivityArgs {
+    id: i64,
+    data: UpdateActivity,
+}
+
 #[wasm_bindgen::prelude::wasm_bindgen]
 extern "C" {
     #[wasm_bindgen::prelude::wasm_bindgen(
@@ -36,6 +42,18 @@ pub async fn create_activity(data: CreateActivity) -> Result<Activity, String> {
     let args = to_value(&args).map_err(|error| error.to_string())?;
 
     let result = JsFuture::from(invoke("create_activity", args))
+        .await
+        .map_err(|error| format!("{error:?}"))?;
+
+    from_value(result).map_err(|error| error.to_string())
+}
+
+pub async fn update_activity(id: i64, data: UpdateActivity) -> Result<Activity, String> {
+    let args = UpdateActivityArgs { id, data };
+
+    let args = to_value(&args).map_err(|error| error.to_string())?;
+
+    let result = JsFuture::from(invoke("update_activity", args))
         .await
         .map_err(|error| format!("{error:?}"))?;
 

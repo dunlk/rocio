@@ -1,5 +1,13 @@
-use crate::features::activities::models::FormMode;
-use leptos::{logging, prelude::*};
+use crate::features::{
+    activities::{
+        self,
+        models::{Activity, CreateActivity, FormMode, UpdateActivity},
+        services::create_activity,
+    },
+    students::service::UpdateStudent,
+};
+use leptos::{logging, prelude::*, reactive::spawn_local};
+use serde::Serialize;
 
 #[component]
 pub fn ActivitiesForm(
@@ -7,22 +15,78 @@ pub fn ActivitiesForm(
     active_register_activity: ReadSignal<bool>,
     set_active_register_activity: WriteSignal<bool>,
     refresh_activities: Callback<()>,
+    update_activities: Callback<Activity>,
 ) -> impl IntoView {
     let (name, set_name) = signal(String::new());
     let (description, set_description) = signal(String::new());
-    let (type_activity, set_type_activity) = signal(String::new());
+    let (activity_type, set_acitivity_type) = signal(String::new());
     let (amount, set_amount) = signal(0.00);
     let (due_date, set_dute_date) = signal(String::new());
     let (activities_date, set_activities_date) = signal(String::new());
 
     let handle_button_submit = move |_: leptos::ev::MouseEvent| {
-        logging::log!("{}", name.get());
-        logging::log!("{}", description.get());
-        logging::log!("{}", type_activity.get());
-        logging::log!("{}", amount.get());
-        logging::log!("{}", due_date.get());
-        logging::log!("{}", activities_date.get());
+        // logging::log!("{}", name.get());
+        // logging::log!("{}", description.get());
+        // logging::log!("{}", type_activity.get());
+        // logging::log!("{}", amount.get());
+        // logging::log!("{}", due_date.get());
+        // logging::log!("{}", activities_date.get());
         // logging::log!("{mode:?}");
+
+        match mode.get() {
+            FormMode::Create => {
+                let name = name.get();
+                let description = Some(description.get());
+                let activity_type = Some(activity_type.get());
+                let amount = amount.get();
+                let due_date = due_date.get();
+                let activities_date = activities_date.get();
+
+                let data = CreateActivity {
+                    name,
+                    description,
+                    activity_type,
+                    amount,
+                    activities_date,
+                    due_date,
+                };
+                spawn_local(async move {
+                    match create_activity(data).await {
+                        Ok(activity) => update_activities.run(activity),
+                        Err(error) => {
+                            logging::error!("{error}")
+                        }
+                    }
+                });
+            }
+
+            FormMode::Edit => {
+                let name = Some(name.get());
+                let description = Some(description.get());
+                let activity_type = Some(activity_type.get());
+                let amount = Some(amount.get());
+                let activities_date = Some(activities_date.get());
+                let due_date = Some(due_date.get());
+
+                let data = UpdateActivity {
+                    name,
+                    description,
+                    activities_date,
+                    amount,
+                    activity_type,
+                    due_date,
+                };
+
+                spawn_local(async move {
+                    // match update_activity(data).await {
+                    //     Ok(activity) => update_activities.run(activity),
+                    //     Err(error) => {
+                    //         logging::error!("{error}")
+                    //     }
+                    // }
+                });
+            }
+        }
     };
 
     view! {
@@ -117,7 +181,7 @@ pub fn ActivitiesForm(
                         focus:ring-pink-500/20
                         "
                         // prop:value=move || type_activity.get()
-                        on:change=move |ev| set_type_activity.set(event_target_value(&ev))
+                        on:change= move |ev| set_acitivity_type.set(event_target_value(&ev))
                     >
                         <option value="monthly">"Mensualidad"</option>
                         <option value="occasional">"Ocasional"</option>

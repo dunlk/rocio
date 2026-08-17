@@ -1,9 +1,26 @@
 use leptos::prelude::*;
 
+use crate::features::activities::models::FormMode;
+
 #[component]
-pub fn CardActivity(set_active_register_activity: WriteSignal<bool>) -> impl IntoView {
+pub fn CardActivity(
+    set_active_register_activity: WriteSignal<bool>,
+    set_mode: WriteSignal<FormMode>,
+) -> impl IntoView {
+    let (name, set_name) = signal(String::new());
+    let (description, set_description) = signal(String::new());
+    let (activity_type, set_activity_type) = signal(String::new());
+    let (amount, set_amount) = signal(0.00);
+    let (activities_date, set_activities_date) = signal(String::new());
+    let (due_date, set_due_date) = signal(String::new());
+
+    let handle_edit = move |_: leptos::ev::MouseEvent| {
+        set_mode.set(FormMode::Edit);
+        set_active_register_activity.set(true);
+    };
+
     view! {
-                    <div class="
+            <div class="
             p-4 px-5
             bg-cyan-500/10 backdrop-blur-md
             text-white rounded-3xl
@@ -34,7 +51,7 @@ pub fn CardActivity(set_active_register_activity: WriteSignal<bool>) -> impl Int
                         active:scale-90
                         transition-all
                         "
-                        on:click=move |_| set_active_register_activity.set(true)
+                        on:click=handle_edit
                         >"✎"</button>
 
                         // Eliminar
