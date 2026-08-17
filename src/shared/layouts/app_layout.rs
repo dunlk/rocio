@@ -15,6 +15,7 @@ struct modal {
 #[component]
 pub fn AppLayout() -> impl IntoView {
     let (active_register_student, set_active_register_student) = signal(false);
+    let (active_register_activity, set_active_register_activity) = signal(false);
     let location = use_location();
 
     let pink_position = move || match location.pathname.get().as_str() {
@@ -35,6 +36,10 @@ pub fn AppLayout() -> impl IntoView {
         if location.pathname.get() != "/students" {
             set_active_register_student.set(false)
         }
+
+        if location.pathname.get() != "/activities" {
+            set_active_register_activity.set(false)
+        }
     });
     view! {
         <div class="text-center overflow-hidden text-white bg-slate-900 flex items-center justify-center flex-col h-screen">
@@ -42,6 +47,8 @@ pub fn AppLayout() -> impl IntoView {
             <Navbar
                 set_active_register_student=set_active_register_student
                 active_register_student=active_register_student
+                set_active_register_activity=set_active_register_activity
+                active_register_activity=active_register_activity
             />
             <main class="w-full h-screen flex flex-col justify-center items-center">
                 <Routes fallback=|| view! { <p>"Vista no encontrada"</p> }>

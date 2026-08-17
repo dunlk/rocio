@@ -4,6 +4,6 @@ use leptos::prelude::*;
 #[component]
 pub fn ActivitiesPage() -> impl IntoView {
     view! {
-        <ActivitiesForm title="Registro de actividad".to_string() />
+        <ActivitiesForm type_form="create".to_string() />
     }
 }

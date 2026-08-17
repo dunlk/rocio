@@ -1,10 +1,10 @@
 use leptos::{logging, prelude::*};
 
 #[component]
-pub fn ActivitiesForm(title: String) -> impl IntoView {
+pub fn ActivitiesForm(type_form: String) -> impl IntoView {
     let (name, set_name) = signal(String::new());
     let (description, set_description) = signal(String::new());
-    let (type_activity, set_type_activity) = signal(String::new());
+    let (type_activity, set_type_activity) = signal("mountly".to_string());
     let (amount, set_amount) = signal(0.00);
     let (due_date, set_dute_date) = signal(String::new());
     let (activities_date, set_activities_date) = signal(String::new());
@@ -19,7 +19,7 @@ pub fn ActivitiesForm(title: String) -> impl IntoView {
     };
 
     view! {
-        <h1 class="z-10 font-bold">{title}</h1>
+        <h1 class="z-10 font-bold">{if type_form == "create" { "Crear"} else {"Editar"}}</h1>
         <div class="flex flex-col gap-4 w-full px-4 z-10">
 
             // Nombre
@@ -94,7 +94,7 @@ pub fn ActivitiesForm(title: String) -> impl IntoView {
                 focus:ring-2
                 focus:ring-pink-500/20
                 "
-                prop:value=move || type_activity.get()
+                // prop:value=move || type_activity.get()
                 on:change=move |ev| set_type_activity.set(event_target_value(&ev))
                 >
                     <option value="monthly">"Mensualidad"</option>

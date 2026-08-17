@@ -5,6 +5,8 @@ use leptos_router::{components::A, hooks::use_location};
 pub fn Navbar(
     set_active_register_student: WriteSignal<bool>,
     active_register_student: ReadSignal<bool>,
+    set_active_register_activity: WriteSignal<bool>,
+    active_register_activity: ReadSignal<bool>,
 ) -> impl IntoView {
     let location = use_location();
     view! {
@@ -13,6 +15,7 @@ pub fn Navbar(
             bg-cyan-400/10 w-[320px] text-white transition-all duration-300  text-md font-semibold border-1 
             border-cyan-600 p-2 backdrop-blur-md"
             class=("w-[370px]", move || location.pathname.get() == "/students")
+            class=("w-[350px]", move || location.pathname.get() == "/activities")
         >
             <ul class="flex gap-1 items-center justify-between">
                 <li
@@ -55,9 +58,26 @@ pub fn Navbar(
 
                 <li
                     class="p-4 rounded-4xl transition-colors duration-700 ease-in-out"
-                    class=("bg-pink-400/60", move || location.pathname.get() == "/activities")
+                    class=(["bg-pink-400/60", "shadow-black/30", "shadow-lg"], move || location.pathname.get() == "/activities")
+                    class=("bg-pink-500/90", move || active_register_activity.get())
                 >
-                    <A href="/activities">"Actividades"</A>
+                    {move || {
+                        if location.pathname.get() == "/activities" {
+                            view! {
+                                <button
+                                class="min-w-[120px] flex justify-center"
+                                on:click=move |_| set_active_register_activity.set(true)
+                                >
+                                    "Crear actividad"
+                                </button>
+
+                            }.into_any()
+                        } else {
+                            view! {
+                                <A href="/activities">"Actividades"</A>
+                            }.into_any()
+                        }
+                    }}
                 </li>
             </ul>
         </div>
