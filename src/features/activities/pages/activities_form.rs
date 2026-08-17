@@ -1,7 +1,11 @@
 use leptos::{logging, prelude::*};
 
 #[component]
-pub fn ActivitiesForm(type_form: String) -> impl IntoView {
+pub fn ActivitiesForm(
+    type_form: String,
+    active_register_activity: ReadSignal<bool>,
+    set_active_register_activity: WriteSignal<bool>,
+) -> impl IntoView {
     let (name, set_name) = signal(String::new());
     let (description, set_description) = signal(String::new());
     let (type_activity, set_type_activity) = signal("mountly".to_string());
@@ -19,8 +23,17 @@ pub fn ActivitiesForm(type_form: String) -> impl IntoView {
     };
 
     view! {
-        <h1 class="z-10 font-bold">{if type_form == "create" { "Crear"} else {"Editar"}}</h1>
-        <div class="flex flex-col gap-4 w-full px-4 z-10">
+        <div
+        class="absolute h-screen transition-all animate-in fade-in duration-500 grid w-full content-center bg-black/30 backdrop-blur-lg z-20"
+            class=(["block"], move || active_register_activity.get())
+            class=(["hidden"], move || !active_register_activity.get())
+            on:click= move |_| set_active_register_activity.set(false)
+            >
+        <h1 class="z-10 font-bold">{if type_form == "create" { "Crear actividad"} else {"Editar actividad"}}</h1>
+        <div
+                class="flex flex-col gap-4 w-full px-4 z-10"
+                on:click=move |ev| ev.stop_propagation()
+                >
 
             // Nombre
             <div class="flex flex-col gap-2">
@@ -207,6 +220,7 @@ pub fn ActivitiesForm(type_form: String) -> impl IntoView {
                 "Crear actividad"
             </button>
 
+        </div>
         </div>
     }
 }

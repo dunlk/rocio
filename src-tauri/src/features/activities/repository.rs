@@ -1,3 +1,4 @@
+use sqlx::SqliteConnection;
 use sqlx::SqlitePool;
 
 use super::models::{Activity, CreateActivity, UpdateActivity};
@@ -11,7 +12,7 @@ pub async fn get_all_activities(pool: &SqlitePool) -> Result<Vec<Activity>, sqlx
             description,
             activity_type,
             amount,
-            actitivites_date,
+            activities_date,
             due_date,
             created_at
         "#,
@@ -23,17 +24,17 @@ pub async fn get_all_activities(pool: &SqlitePool) -> Result<Vec<Activity>, sqlx
 }
 
 pub async fn create_activity(
-    pool: &SqlitePool,
+    connection: &mut SqliteConnection,
     data: CreateActivity,
 ) -> Result<Activity, sqlx::Error> {
     let activity = sqlx::query_as::<_, Activity>(
         r#"
-        INSERT INTO activities(
+        INSERT INTO activities (
             name,
             description,
             activity_type,
             amount,
-            actitivites_date,
+            activities_date,
             due_date
         )
         VALUES (?, ?, ?, ?, ?, ?)
@@ -43,7 +44,7 @@ pub async fn create_activity(
             description,
             activity_type,
             amount,
-            actitivites_date,
+            activities_date
             due_date,
             created_at
         "#,
@@ -54,7 +55,7 @@ pub async fn create_activity(
     .bind(data.amount)
     .bind(data.activities_date)
     .bind(data.due_date)
-    .fetch_one(pool)
+    .fetch_one(connection)
     .await?;
 
     Ok(activity)
@@ -62,6 +63,7 @@ pub async fn create_activity(
 
 pub async fn update_activity(
     pool: &SqlitePool,
+    id: i64,
     data: UpdateActivity,
 ) -> Result<Activity, sqlx::Error> {
     let activity = sqlx::query_as::<_, Activity>(
@@ -91,6 +93,7 @@ pub async fn update_activity(
     .bind(data.amount)
     .bind(data.activities_date)
     .bind(data.due_date)
+    .bind(id)
     .fetch_one(pool)
     .await?;
 
@@ -106,6 +109,29 @@ pub async fn delete_activity(pool: &SqlitePool, id: i64) -> Result<(), sqlx::Err
     )
     .bind(id)
     .execute(pool)
+    .await?;
+
+    Ok(())
+}
+
+pub async fn create_for_activity(
+    tx: &mut sqlx::SqliteConnection,
+    activity_id: i64,
+) -> Result<(), sqlx::Error> {
+    sqlx::query(
+        r#"
+        INSERT INTO activity_payments (
+            activity_id,
+            student_id,
+        )
+        SELECT
+            ?,
+            id,
+        FROM students
+        "#,
+    )
+    .bind(activity_id)
+    .execute(tx)
     .await?;
 
     Ok(())

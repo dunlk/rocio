@@ -1,5 +1,9 @@
+use sqlx::Connection;
+use sqlx::SqliteConnection;
 use sqlx::SqlitePool;
 use tauri::State;
+
+use crate::features::activities::services;
 
 use super::models::*;
 use super::repository;
@@ -16,7 +20,7 @@ pub async fn create_activity(
     pool: State<'_, SqlitePool>,
     data: CreateActivity,
 ) -> Result<Activity, String> {
-    repository::create_activity(&pool, data)
+    services::create_activity(&pool, data)
         .await
         .map_err(|error| error.to_string())
 }
@@ -27,7 +31,7 @@ pub async fn update_activity(
     id: i64,
     data: UpdateActivity,
 ) -> Result<Activity, String> {
-    repository::update_activity(&pool, data)
+    repository::update_activity(&pool, id, data)
         .await
         .map_err(|error| error.to_string())
 }

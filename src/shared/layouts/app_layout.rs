@@ -64,7 +64,8 @@ pub fn AppLayout() -> impl IntoView {
                             }
                         }
                     />
-                    <Route path=path!("/activities") view=|| ActivitiesPage() />
+                    <Route path=path!("/activities") view=move ||view! {<ActivitiesPage active_regiser_activity=active_register_activity
+                        set_active_register_activity=set_active_register_activity/> }/>
                 </Routes>
             </main>
         </div>

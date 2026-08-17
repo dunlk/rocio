@@ -8,7 +8,7 @@ pub struct Activity {
     pub name: String,
     pub description: Option<String>,
     pub activity_type: String,
-    pub amout: f64,
+    pub amount: f64,
     pub activities_date: Option<String>,
     pub due_date: Option<String>,
     pub created_at: String,
@@ -32,4 +32,15 @@ pub struct UpdateActivity {
     pub amount: Option<f64>,
     pub activities_date: Option<String>,
     pub due_date: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize, sqlx::FromRow)]
+pub struct ActivityPayments {
+    pub id: i64,
+    pub activity_id: i64,
+    pub student_id: i64,
+    pub amount_paid: f64,
+    pub status: String,
+    pub paid_at: String,
+    pub created_at: String,
 }
