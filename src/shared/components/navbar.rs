@@ -10,8 +10,8 @@ pub fn Navbar(
     view! {
         <div
             class="absolute z-50 bottom-[30px] shadow-lg shadow-black/20 -translate-x-1/2  left-1/2 rounded-4xl flex
-             bg-cyan-400/10 w-[320px] text-white transition-all duration-300  text-md font-semibold border-1 
-             border-cyan-600 p-2 backdrop-blur-md"
+            bg-cyan-400/10 w-[320px] text-white transition-all duration-300  text-md font-semibold border-1 
+            border-cyan-600 p-2 backdrop-blur-md"
             class=("w-[370px]", move || location.pathname.get() == "/students")
         >
             <ul class="flex gap-1 items-center justify-between">

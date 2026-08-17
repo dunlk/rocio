@@ -58,7 +58,7 @@ pub fn StudentForm(
                 <label class="font-bold">"Apellidos:  "</label>
                 <input
                     class="outline-none border-1 border-cyan-600 ml-1 focus:border-3  transition-all
-                      focus:bg-cyan-400/20 focus:border-pink-600/80 bg-cyan-400/10 rounded-3xl p-3"
+                    focus:bg-cyan-400/20 focus:border-pink-600/80 bg-cyan-400/10 rounded-3xl p-3"
                     type="text"
                     prop:value=move || last_name.get()
                     required
@@ -70,13 +70,13 @@ pub fn StudentForm(
             <div class="flex gap-2 font-bold">
                 <button
                     class="bg-green-400/40 rounded-3xl px-5 mx-auto py-3 whitespace-nowrap"
-                    on:click= handle_create_student
+                    on:click=handle_create_student
                 >
                     "Crear alumno"
                 </button>
                 <button
                     class="bg-red-500/40 rounded-3xl px-5 mx-auto py-3 whitespace-nowrap"
-                    on:click= handle_cancel
+                    on:click=handle_cancel
                 >
                     "Cancelar"
                 </button>
