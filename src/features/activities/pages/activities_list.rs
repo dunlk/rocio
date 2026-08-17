@@ -12,6 +12,7 @@ pub fn ActivitiesList(
     loading: ReadSignal<bool>,
     set_active_register_activity: WriteSignal<bool>,
     set_mode: WriteSignal<FormMode>,
+    set_id: WriteSignal<Option<i64>>,
 ) -> impl IntoView {
     let location = use_location();
 

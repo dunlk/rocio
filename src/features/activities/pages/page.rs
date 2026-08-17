@@ -14,6 +14,7 @@ pub fn ActivitiesPage(
     let (activities, set_activities) = signal(Vec::<Activity>::new());
     let (loading, set_loading) = signal(true);
     let (mode, set_mode) = signal(FormMode::Create);
+    let (id, set_id) = signal::<Option<i64>>(None);
 
     let refresh_activities = Callback::new(move |_| {
         spawn_local(async move {
@@ -47,6 +48,7 @@ pub fn ActivitiesPage(
             set_active_register_activity=set_active_register_activity
             refresh_activities=refresh_activities
             update_activities=update_activities
+            id=id
         />
         <ActivitiesList
             activities=activities
@@ -54,6 +56,7 @@ pub fn ActivitiesPage(
             loading=loading
             set_active_register_activity=set_active_register_activity
             set_mode=set_mode
+            set_id=set_id
         />
     }
 }

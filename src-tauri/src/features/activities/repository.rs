@@ -46,7 +46,7 @@ pub async fn create_activity(
             description,
             activity_type,
             amount,
-            activities_date
+            activities_date,
             due_date,
             created_at
         "#,

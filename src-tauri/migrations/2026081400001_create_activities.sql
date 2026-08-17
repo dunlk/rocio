@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS activities (
   name TEXT NOT NULL,
   description TEXT,
   activity_type TEXT NOT NULL
-    CHECK (activity_type IN ('monthly', 'occacional')),
+    CHECK (activity_type IN ('monthly', 'occasional')),
   amount REAL NOT NULL,
   activities_date DATE,
   due_date DATE,

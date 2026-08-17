@@ -15,6 +15,7 @@ pub fn StudentsPage(
 ) -> impl IntoView {
     let (students_list, set_students_list) = signal(Vec::<Student>::new());
     let (loading, set_loading) = signal(true);
+    // let (mode, )
 
     let refresh_students = Callback::new(move |_| {
         spawn_local(async move {

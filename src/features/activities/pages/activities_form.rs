@@ -2,7 +2,7 @@ use crate::features::{
     activities::{
         self,
         models::{Activity, CreateActivity, FormMode, UpdateActivity},
-        services::create_activity,
+        services::{create_activity, update_activity},
     },
     students::service::UpdateStudent,
 };
@@ -16,76 +16,71 @@ pub fn ActivitiesForm(
     set_active_register_activity: WriteSignal<bool>,
     refresh_activities: Callback<()>,
     update_activities: Callback<Activity>,
+    id: ReadSignal<Option<i64>>,
 ) -> impl IntoView {
     let (name, set_name) = signal(String::new());
     let (description, set_description) = signal(String::new());
-    let (activity_type, set_acitivity_type) = signal(String::new());
+    let (activity_type, set_acitivity_type) = signal("monthly".to_string());
     let (amount, set_amount) = signal(0.00);
     let (due_date, set_dute_date) = signal(String::new());
     let (activities_date, set_activities_date) = signal(String::new());
+    // let (id, set_id) = signal::<Option<i64>>::(None);
 
-    let handle_button_submit = move |_: leptos::ev::MouseEvent| {
-        // logging::log!("{}", name.get());
-        // logging::log!("{}", description.get());
-        // logging::log!("{}", type_activity.get());
-        // logging::log!("{}", amount.get());
-        // logging::log!("{}", due_date.get());
-        // logging::log!("{}", activities_date.get());
-        // logging::log!("{mode:?}");
+    let handle_button_submit = move |_: leptos::ev::MouseEvent| match mode.get() {
+        FormMode::Create => {
+            let name = name.get();
+            let description = Some(description.get());
+            let activity_type = Some(activity_type.get());
+            let amount = amount.get();
+            let due_date = due_date.get();
+            let activities_date = activities_date.get();
 
-        match mode.get() {
-            FormMode::Create => {
-                let name = name.get();
-                let description = Some(description.get());
-                let activity_type = Some(activity_type.get());
-                let amount = amount.get();
-                let due_date = due_date.get();
-                let activities_date = activities_date.get();
+            let data = CreateActivity {
+                name,
+                description,
+                activity_type,
+                amount,
+                activities_date,
+                due_date,
+            };
+            spawn_local(async move {
+                match create_activity(data).await {
+                    Ok(activity) => update_activities.run(activity),
+                    Err(error) => {
+                        logging::error!("{error}")
+                    }
+                }
+            });
+        }
 
-                let data = CreateActivity {
-                    name,
-                    description,
-                    activity_type,
-                    amount,
-                    activities_date,
-                    due_date,
-                };
+        FormMode::Edit => {
+            let name = Some(name.get());
+            let description = Some(description.get());
+            let activity_type = Some(activity_type.get());
+            let amount = Some(amount.get());
+            let activities_date = Some(activities_date.get());
+            let due_date = Some(due_date.get());
+            let id = id.get();
+
+            let data = UpdateActivity {
+                name,
+                description,
+                activities_date,
+                amount,
+                activity_type,
+                due_date,
+            };
+
+            if let Some(id) = id {
                 spawn_local(async move {
-                    match create_activity(data).await {
+                    match update_activity(id, data).await {
                         Ok(activity) => update_activities.run(activity),
                         Err(error) => {
                             logging::error!("{error}")
                         }
                     }
                 });
-            }
-
-            FormMode::Edit => {
-                let name = Some(name.get());
-                let description = Some(description.get());
-                let activity_type = Some(activity_type.get());
-                let amount = Some(amount.get());
-                let activities_date = Some(activities_date.get());
-                let due_date = Some(due_date.get());
-
-                let data = UpdateActivity {
-                    name,
-                    description,
-                    activities_date,
-                    amount,
-                    activity_type,
-                    due_date,
-                };
-
-                spawn_local(async move {
-                    // match update_activity(data).await {
-                    //     Ok(activity) => update_activities.run(activity),
-                    //     Err(error) => {
-                    //         logging::error!("{error}")
-                    //     }
-                    // }
-                });
-            }
+            };
         }
     };
 
