@@ -31,3 +31,9 @@ pub struct UpdateActivity {
     pub activities_date: Option<String>,
     pub due_date: Option<String>,
 }
+
+#[derive(Clone, Copy, PartialEq)]
+pub enum FormMode {
+    Create,
+    Edit,
+}

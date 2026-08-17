@@ -1,136 +1,24 @@
 use leptos::prelude::*;
 
+use super::card_activity::CardActivity;
+use crate::features::activities::models::Activity;
+
 #[component]
-pub fn ActivitiesList() -> impl IntoView {
+pub fn ActivitiesList(
+    activities: ReadSignal<Vec<Activity>>,
+    refresh_activities: Callback<()>,
+    loading: ReadSignal<bool>,
+    set_active_register_activity: WriteSignal<bool>,
+) -> impl IntoView {
+    Effect::new(move |_| {
+        refresh_activities.run(());
+    });
     view! {
         <div class="h-screen py-32 overflow-y-auto flex flex-col gap-2 z-10 px-4">
-            <div class="
-    p-4 px-5
-    bg-cyan-500/10 backdrop-blur-md
-    text-white rounded-3xl
-    border border-cyan-400/20
-    shadow-lg shadow-black/10
-">
-        // Parte superior
-        <div class="flex items-center justify-between">
-
-            // Actividad
-            <div class="min-w-0">
-                <p class="text-lg font-bold truncate">
-                    "Mensualidad Agosto"
-                </p>
-
-                <p class="text-xs text-white/50">
-                    "Actividad"
-                </p>
-            </div>
-
-            // Acciones
-            <div class="flex gap-2">
-
-                // Editar
-                <button
-                    class="
-                    w-10 h-10
-                    flex items-center justify-center
-                    rounded-full
-                    bg-cyan-400/15
-                    text-cyan-300
-                    border border-cyan-400/20
-                    active:scale-90
-                    transition-all
-                "
-                >
-                    "✎"
-                </button>
-
-                // Eliminar
-                <button
-                    class="
-                    w-10 h-10
-                    flex items-center justify-center
-                    rounded-full
-                    bg-red-500/15
-                    text-red-400
-                    border border-red-400/20
-                    active:scale-90
-                    transition-all
-                "
-                >
-                    "×"
-                </button>
-
-            </div>
+            <CardActivity set_active_register_activity=set_active_register_activity/>
+            <CardActivity set_active_register_activity=set_active_register_activity/>
+            <CardActivity set_active_register_activity=set_active_register_activity/>
+            <CardActivity set_active_register_activity=set_active_register_activity/>
         </div>
-
-        // Descripción
-        <p class="mt-3 text-sm text-white/60 line-clamp-2">
-            "Pago correspondiente a la mensualidad del mes de agosto."
-        </p>
-
-        // Separador
-        <div class="my-3 h-px bg-white/10"></div>
-
-        // Tipo y monto
-        <div class="flex items-center justify-between">
-
-            <div>
-                <p class="text-xs text-white/40">
-                    "Tipo"
-                </p>
-
-                <span class="
-                inline-block mt-1
-                px-3 py-1
-                rounded-full
-                bg-cyan-400/15
-                text-cyan-300
-                text-xs font-semibold
-                border border-cyan-400/20
-            ">
-                    "Mensual"
-                </span>
-            </div>
-
-            <div class="text-right">
-                <p class="text-xs text-white/40">
-                    "Monto"
-                </p>
-
-                <p class="text-xl font-bold text-cyan-300">
-                    "S/ 50.00"
-                </p>
-            </div>
-
-        </div>
-
-        // Fechas
-        <div class="
-        mt-4 p-3
-        rounded-2xl
-        bg-black/10
-        flex justify-between
-        text-sm
-    ">
-            <div>
-                <p class="text-xs text-white/40">
-                    "Fecha"
-                </p>
-                <p class="font-medium">
-                    "01/08/2026"
-                </p>
-            </div>
-
-            <div class="text-right">
-                <p class="text-xs text-white/40">
-                    "Vencimiento"
-                </p>
-                <p class="font-medium text-pink-300">
-                    "10/08/2026"
-                </p>
-            </div>
-        </div>
-    </div>
-        </div>
-        }
+    }
 }

@@ -58,24 +58,27 @@ pub fn Navbar(
 
                 <li
                     class="p-4 rounded-4xl transition-colors duration-700 ease-in-out"
-                    class=(["bg-pink-400/60", "shadow-black/30", "shadow-lg"], move || location.pathname.get() == "/activities")
+                    class=(
+                        ["bg-pink-400/60", "shadow-black/30", "shadow-lg"],
+                        move || location.pathname.get() == "/activities",
+                    )
                     class=("bg-pink-500/90", move || active_register_activity.get())
                 >
                     {move || {
                         if location.pathname.get() == "/activities" {
                             view! {
                                 <button
-                                class="min-w-[120px] flex justify-center"
-                                on:click=move |_| set_active_register_activity.set(true)
+                                    class="min-w-[120px] flex justify-center"
+                                    on:click=move |_| set_active_register_activity.set(true)
                                 >
                                     "Crear actividad"
                                 </button>
-
-                            }.into_any()
+                            }
+                                .into_any()
                         } else {
-                            view! {
-                                <A href="/activities">"Actividades"</A>
-                            }.into_any()
+
+                            view! { <A href="/activities">"Actividades"</A> }
+                                .into_any()
                         }
                     }}
                 </li>

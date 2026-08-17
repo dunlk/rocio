@@ -1,3 +1,4 @@
+use crate::features::activities::models::Activity;
 use crate::features::students;
 use crate::features::students::service::get_students;
 
