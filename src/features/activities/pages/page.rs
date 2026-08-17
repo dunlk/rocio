@@ -13,7 +13,6 @@ pub fn ActivitiesPage(
 ) -> impl IntoView {
     let (activities, set_activities) = signal(Vec::<Activity>::new());
     let (loading, set_loading) = signal(true);
-    // let (type_form, set_type_form) = signal("create");
     let (mode, set_mode) = signal(FormMode::Create);
 
     let refresh_activities = Callback::new(move |_| {
@@ -22,7 +21,7 @@ pub fn ActivitiesPage(
                 Ok(activities) => set_activities.set(activities),
 
                 Err(error) => {
-                    logging::error!("{error}")
+                    logging::error!("Error al traer activities: {error}")
                 }
             }
 

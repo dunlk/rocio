@@ -15,6 +15,8 @@ pub async fn get_all_activities(pool: &SqlitePool) -> Result<Vec<Activity>, sqlx
             activities_date,
             due_date,
             created_at
+        FROM 
+            activities
         "#,
     )
     .fetch_all(pool)
