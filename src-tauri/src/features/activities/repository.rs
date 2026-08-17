@@ -76,7 +76,7 @@ pub async fn update_activity(
             activity_type = ?,
             amount = ?,
             activities_date = ?,
-            due_date = ?,
+            due_date = ?
         WHERE ID = ?
         RETURNING
             id,
@@ -86,7 +86,7 @@ pub async fn update_activity(
             amount,
             activities_date,
             due_date,
-            created_at,
+            created_at
         "#,
     )
     .bind(data.name)
@@ -124,11 +124,11 @@ pub async fn create_for_activity(
         r#"
         INSERT INTO activity_payments (
             activity_id,
-            student_id,
+            student_id
         )
         SELECT
             ?,
-            id,
+            id
         FROM students
         "#,
     )

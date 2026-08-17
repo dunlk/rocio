@@ -63,7 +63,7 @@ pub async fn update_student(
             RETURNING
                 id,
                 first_name,
-                last_name
+                last_name,
                 created_at
         "#,
     )
