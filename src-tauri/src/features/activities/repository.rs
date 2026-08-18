@@ -71,6 +71,7 @@ pub async fn update_activity(
     let activity = sqlx::query_as::<_, Activity>(
         r#"
         UPDATE activities
+        SET
             name = ?,
             description = ?,
             activity_type = ?,

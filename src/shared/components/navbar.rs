@@ -1,15 +1,32 @@
 use leptos::prelude::*;
 use leptos_router::{components::A, hooks::use_location};
 
+use crate::features::activities::models::{Activity, FormMode};
+use crate::features::activities::pages::activities_form::ActivitiesForm;
+
 #[component]
 pub fn Navbar(
     set_active_register_student: WriteSignal<bool>,
     active_register_student: ReadSignal<bool>,
-    set_active_register_activity: WriteSignal<bool>,
-    active_register_activity: ReadSignal<bool>,
 ) -> impl IntoView {
+    let (active_register, set_active_register) = signal(false);
     let location = use_location();
+    let (activity, set_activity) = signal::<Option<Activity>>(None);
+    let (id, set_id) = signal::<Option<i64>>(None);
+
+    Effect::new(move |_| {
+        if location.pathname.get() != "activities" {
+            set_active_register.set(false);
+        }
+    });
     view! {
+        <ActivitiesForm
+             active_register_activity=active_register
+             set_active_register_activity=set_active_register
+             mode=FormMode::Create
+             id=id
+             activity=activity
+         />
         <div
             class="absolute z-50 bottom-[30px] shadow-lg shadow-black/20 -translate-x-1/2  left-1/2 rounded-4xl flex
             bg-cyan-400/10 w-[320px] text-white transition-all duration-300  text-md font-semibold border-1 
@@ -62,14 +79,14 @@ pub fn Navbar(
                         ["bg-pink-400/60", "shadow-black/30", "shadow-lg"],
                         move || location.pathname.get() == "/activities",
                     )
-                    class=("bg-pink-500/90", move || active_register_activity.get())
+                    class=("bg-pink-500/90", move || active_register.get())
                 >
                     {move || {
                         if location.pathname.get() == "/activities" {
                             view! {
                                 <button
                                     class="min-w-[120px] flex justify-center"
-                                    on:click=move |_| set_active_register_activity.set(true)
+                                    on:click=move |_| set_active_register.set(true)
                                 >
                                     "Crear actividad"
                                 </button>

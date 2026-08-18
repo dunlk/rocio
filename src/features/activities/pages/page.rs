@@ -7,10 +7,10 @@ use leptos::reactive::spawn_local;
 use leptos::{logging, prelude::*};
 
 #[component]
-pub fn ActivitiesPage(
-    active_register_activity: ReadSignal<bool>,
-    set_active_register_activity: WriteSignal<bool>,
+pub fn ActivitiesPage(// active_register_activity: ReadSignal<bool>,
+    // set_active_register_activity: WriteSignal<bool>,
 ) -> impl IntoView {
+    let (active_edit, set_active_edit) = signal(false);
     let (activities, set_activities) = signal(Vec::<Activity>::new());
     let (loading, set_loading) = signal(true);
     let (mode, set_mode) = signal(FormMode::Create);
@@ -42,21 +42,17 @@ pub fn ActivitiesPage(
     });
 
     view! {
-        <ActivitiesForm
-            mode=mode
-            active_register_activity=active_register_activity
-            set_active_register_activity=set_active_register_activity
-            refresh_activities=refresh_activities
-            update_activities=update_activities
-            id=id
-        />
+        // <ActivitiesForm
+        //     mode=mode
+        //     // active_register_activity=active_register_activity
+        //     // set_active_register_activity=set_active_register_activity
+        //     refresh_activities=refresh_activities
+        //     update_activities=update_activities
+        //     id=id
+        // />
         <ActivitiesList
             activities=activities
             refresh_activities=refresh_activities
-            loading=loading
-            set_active_register_activity=set_active_register_activity
-            set_mode=set_mode
-            set_id=set_id
         />
     }
 }
