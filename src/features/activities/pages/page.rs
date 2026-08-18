@@ -42,14 +42,6 @@ pub fn ActivitiesPage(// active_register_activity: ReadSignal<bool>,
     });
 
     view! {
-        // <ActivitiesForm
-        //     mode=mode
-        //     // active_register_activity=active_register_activity
-        //     // set_active_register_activity=set_active_register_activity
-        //     refresh_activities=refresh_activities
-        //     update_activities=update_activities
-        //     id=id
-        // />
         <ActivitiesList
             activities=activities
             refresh_activities=refresh_activities

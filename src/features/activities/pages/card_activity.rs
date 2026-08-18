@@ -1,3 +1,4 @@
+use leptos::logging;
 use leptos::prelude::*;
 
 use crate::features::activities::models::{Activity, FormMode};
@@ -16,6 +17,7 @@ pub fn CardActivity(
     let (amount, set_amount) = signal(0.00);
     let (activities_date, set_activities_date) = signal(String::new());
     let (due_date, set_due_date) = signal(String::new());
+    let activity_id = activity.id;
 
     let activity_for_edit = activity.clone();
 
@@ -24,6 +26,11 @@ pub fn CardActivity(
         set_id.set(Some(activity.id));
         set_active_register_activity.set(true);
         set_activity_edit.set(Some(activity_for_edit.clone()));
+    };
+
+    let handle_delete = move |_: leptos::ev::MouseEvent| {
+        leptos::logging::log!("CLICK FUNCIONA");
+        set_id.set(Some(activity.id));
     };
 
     view! {
@@ -71,7 +78,9 @@ pub fn CardActivity(
                         border border-red-400/20
                         active:scale-90
                         transition-all
-                        ">"×"</button>
+                        "
+                        on:click=handle_delete
+                        >"×"</button>
 
                     </div>
                 </div>

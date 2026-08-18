@@ -106,7 +106,7 @@ pub async fn update_activity(
 pub async fn delete_activity(pool: &SqlitePool, id: i64) -> Result<(), sqlx::Error> {
     sqlx::query(
         r#"
-        DELETE activities
+        DELETE FROM activities
         WHERE id = ?
         "#,
     )

@@ -2,6 +2,7 @@ use leptos::prelude::*;
 
 use super::activities_form::ActivitiesForm;
 use super::card_activity::CardActivity;
+use super::modal_delete::ModalDelete;
 use crate::features::activities::models::Activity;
 use crate::features::activities::models::FormMode;
 use leptos_router::{hooks::use_location, location};
@@ -22,6 +23,7 @@ pub fn ActivitiesList(
     });
 
     view! {
+        <ModalDelete id=id set_id=set_id/>
         <ActivitiesForm
             mode=FormMode::Edit
             active_register_activity=active_edit
