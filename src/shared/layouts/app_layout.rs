@@ -1,7 +1,12 @@
+use crate::features::activities;
+use crate::features::activities::models::Activity;
 use crate::features::activities::pages::page::ActivitiesPage;
+use crate::features::activities::services::{get_activities, update_activity};
 use crate::features::{home::page::HomePage, students::page::StudentsPage};
 use crate::shared::components::navbar::Navbar;
+use leptos::leptos_dom::logging;
 use leptos::prelude::*;
+use leptos::reactive::spawn_local;
 use leptos_router::hooks::use_location;
 use leptos_router::{
     components::{Route, Routes},
@@ -16,6 +21,8 @@ use leptos_router::{
 pub fn AppLayout() -> impl IntoView {
     let (active_register_student, set_active_register_student) = signal(false);
     // let (active_register_activity, set_active_register_activity) = signal(false);
+    let (activities, set_activities) = signal(Vec::<Activity>::new());
+    // let (activities, set_activities) = signal::<Vec<RwSignal<Activity>>>(Vec::new());
     let location = use_location();
 
     let pink_position = move || match location.pathname.get().as_str() {
@@ -32,14 +39,42 @@ pub fn AppLayout() -> impl IntoView {
         _ => "translate-x-[0px]",
     };
 
+    spawn_local(async move {
+        match get_activities().await {
+            Ok(data) => set_activities.set(data),
+            Err(error) => leptos::logging::error!("{error}"),
+        }
+    });
+
+    let refresh_activities = Callback::new(move |()| {
+        spawn_local(async move {
+            match get_activities().await {
+                Ok(activities) => set_activities.set(activities),
+
+                Err(error) => {
+                    leptos::logging::error!("Error al traer activities: {error}")
+                }
+            }
+        });
+    });
+
+    let add_activity = Callback::new(move |activity: Activity| {
+        set_activities.update(|activities| {
+            activities.push(activity);
+        })
+    });
+
+    // let update_activity = Callback::new(move  |activity:Activity| {
+    //     spawn_local(async move {
+    //         match update_activity(id, data)
+    //     });
+    // })
+    //
+
     Effect::new(move |_| {
         if location.pathname.get() != "/students" {
             set_active_register_student.set(false)
         }
-
-        // if location.pathname.get() != "/activities" {
-        //     set_active.set(false)
-        // }
     });
     view! {
         <div class="text-center overflow-hidden text-white bg-slate-900 flex items-center justify-center flex-col h-screen">
@@ -47,8 +82,7 @@ pub fn AppLayout() -> impl IntoView {
             <Navbar
                 set_active_register_student=set_active_register_student
                 active_register_student=active_register_student
-                // set_active_register_activity=set_active_register_activity
-                // active_register_activity=active_register_activity
+                add_activity=add_activity
             />
             <main class="w-full h-screen flex flex-col justify-center items-center">
                 <Routes fallback=|| view! { <p>"Vista no encontrada"</p> }>
@@ -71,6 +105,8 @@ pub fn AppLayout() -> impl IntoView {
                                 <ActivitiesPage
                                     // active_register_activity=active_register_activity
                                     // set_active_register_activity=set_active_register_activity
+                                    activities_list=activities
+                                    refresh_activities=refresh_activities
                                 />
                             }
                         }

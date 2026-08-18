@@ -1,23 +1,19 @@
-use crate::features::{
-    activities::{
-        self,
-        models::{Activity, CreateActivity, FormMode, UpdateActivity},
-        services::{create_activity, update_activity},
-    },
-    students::service::UpdateStudent,
+use crate::features::activities::{
+    models::{Activity, CreateActivity, FormMode, UpdateActivity},
+    services::{create_activity, update_activity},
 };
 use leptos::{logging, prelude::*, reactive::spawn_local};
-use serde::Serialize;
 
 #[component]
 pub fn ActivitiesForm(
     mode: FormMode,
     active_register_activity: ReadSignal<bool>,
     set_active_register_activity: WriteSignal<bool>,
-    // refresh_activities: Callback<()>,
-    // update_activities: Callback<Activity>,
+    #[prop(optional)] refresh_activities: Option<Callback<()>>,
+    #[prop(optional)] update_activities: Option<Callback<Activity>>,
     id: ReadSignal<Option<i64>>,
     activity: ReadSignal<Option<Activity>>,
+    #[prop(optional)] add_activity: Option<Callback<Activity>>,
 ) -> impl IntoView {
     let (name, set_name) = signal(String::new());
     let (description, set_description) = signal(String::new());
@@ -66,7 +62,7 @@ pub fn ActivitiesForm(
             let due_date = due_date.get();
             let activities_date = activities_date.get();
 
-            set_is_active_botton.set(true);
+            // set_is_active_botton.set(true);
 
             let data = CreateActivity {
                 name,
@@ -80,7 +76,9 @@ pub fn ActivitiesForm(
             spawn_local(async move {
                 match create_activity(data).await {
                     Ok(activity) => {
-                        // update_activities.run(activity)
+                        if let Some(add_activity) = add_activity {
+                            add_activity.run(activity)
+                        }
                     }
                     Err(error) => {
                         logging::error!("{error}")
@@ -111,8 +109,11 @@ pub fn ActivitiesForm(
             if let Some(id) = id.get() {
                 spawn_local(async move {
                     match update_activity(id, data).await {
-                        Ok(activity) => {
+                        Ok(_) => {
                             // update_activities.run(activity)
+                            if let Some(refresh_activities) = refresh_activities {
+                                refresh_activities.run(())
+                            }
                         }
                         Err(error) => {
                             logging::error!("{error}")

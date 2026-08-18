@@ -4,22 +4,33 @@ use leptos::reactive::spawn_local;
 
 use crate::features::activities::services::delete_activity;
 #[component]
-pub fn ModalDelete(id: ReadSignal<Option<i64>>, set_id: WriteSignal<Option<i64>>) -> impl IntoView {
+pub fn ModalDelete(
+    id: ReadSignal<Option<i64>>,
+    set_id: WriteSignal<Option<i64>>,
+    is_active_modal: ReadSignal<bool>,
+    set_is_active_modal: WriteSignal<bool>,
+    refresh_activities: Callback<()>,
+) -> impl IntoView {
     let handle_confirm = move |_: leptos::ev::MouseEvent| {
         // logging::log!("id:{:?}", id)
         spawn_local(async move {
             if let Some(id) = id.get_untracked() {
                 match delete_activity(id).await {
-                    Ok(_) => set_id.set(None),
+                    Ok(_) => {
+                        set_id.set(None);
+                        set_is_active_modal.set(false);
+                        refresh_activities.run(())
+                    }
                     Err(error) => logging::error!("{error}"),
                 }
-                // set_id.set(None);
             }
         });
     };
 
+    let handle_cancel = move |_: leptos::ev::MouseEvent| set_is_active_modal.set(false);
+
     view! {
-        <Show when=move || id.get().is_some()>
+        <Show when=move || is_active_modal.get()>
             // Overlay
             <div class="
                 fixed inset-0 z-50
@@ -84,9 +95,7 @@ pub fn ModalDelete(id: ReadSignal<Option<i64>>, set_id: WriteSignal<Option<i64>>
                                 active:scale-95
                                 transition-all
                             "
-                            on:click=move |_| {
-                                set_id.set(None);
-                            }
+                            on:click=handle_cancel
                         >
                             "Cancelar"
                         </button>

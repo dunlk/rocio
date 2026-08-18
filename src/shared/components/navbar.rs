@@ -8,6 +8,7 @@ use crate::features::activities::pages::activities_form::ActivitiesForm;
 pub fn Navbar(
     set_active_register_student: WriteSignal<bool>,
     active_register_student: ReadSignal<bool>,
+    add_activity: Callback<Activity>,
 ) -> impl IntoView {
     let (active_register, set_active_register) = signal(false);
     let location = use_location();
@@ -26,6 +27,7 @@ pub fn Navbar(
              mode=FormMode::Create
              id=id
              activity=activity
+            add_activity=add_activity
          />
         <div
             class="absolute z-50 bottom-[30px] shadow-lg shadow-black/20 -translate-x-1/2  left-1/2 rounded-4xl flex
