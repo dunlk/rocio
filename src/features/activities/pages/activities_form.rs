@@ -26,6 +26,17 @@ pub fn ActivitiesForm(
     let (amount, set_amount) = signal(0.0);
     let (activities_date, set_activities_date) = signal(String::new());
     let (due_date, set_due_date) = signal(String::new());
+    let (is_active_botton, set_is_active_botton) = signal(false);
+
+    let clear_data = move || {
+        set_name.set(String::new());
+        set_description.set(String::new());
+        set_activity_type.set("monthly".to_string());
+        set_amount.set(0.0);
+        set_activities_date.set(String::new());
+        set_due_date.set(String::new());
+        set_active_register_activity.set(false);
+    };
 
     Effect::new(move |_| {
         if let Some(activity) = activity.get() {
@@ -55,6 +66,8 @@ pub fn ActivitiesForm(
             let due_date = due_date.get();
             let activities_date = activities_date.get();
 
+            set_is_active_botton.set(true);
+
             let data = CreateActivity {
                 name,
                 description,
@@ -63,6 +76,7 @@ pub fn ActivitiesForm(
                 activities_date,
                 due_date,
             };
+
             spawn_local(async move {
                 match create_activity(data).await {
                     Ok(activity) => {
@@ -72,6 +86,7 @@ pub fn ActivitiesForm(
                         logging::error!("{error}")
                     }
                 }
+                clear_data();
             });
         }
 
@@ -103,10 +118,23 @@ pub fn ActivitiesForm(
                             logging::error!("{error}")
                         }
                     }
+                    clear_data();
                 });
             };
         }
     };
+
+    Effect::new(move |_| {
+        if name.get().trim().is_empty()
+            || activities_date.get().is_empty()
+            || amount.get() <= 0.0
+            || due_date.get().is_empty()
+        {
+            set_is_active_botton.set(false);
+        } else {
+            set_is_active_botton.set(true);
+        }
+    });
 
     view! {
     <div
@@ -301,14 +329,15 @@ pub fn ActivitiesForm(
             mt-2
             w-full
             rounded-2xl
-            bg-cyan-500
             py-4
             font-bold
             text-black
             transition-all
-            active:scale-[0.98]
             "
+            class=(["bg-cyan-500", "active:scale-[0.98]"], move || is_active_botton.get())
+            class=(["bg-gray-500"], move || !is_active_botton.get())
             on:click=handle_button_submit
+            disabled= move || !is_active_botton.get()
         >
             {move || match mode {
                 FormMode::Create => "Crear actividad",
