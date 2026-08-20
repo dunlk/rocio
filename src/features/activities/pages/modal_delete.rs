@@ -35,14 +35,14 @@ pub fn ModalDelete(
             <div class="
                 fixed inset-0 z-50
                 flex items-center justify-center
-                bg-black/50 backdrop-blur-sm
+                bg-black/50 backdrop-blur-lg
                 px-5
             ">
                 // Modal
                 <div class="
                     w-full max-w-[340px]
                     rounded-3xl
-                    bg-[#0b2239]/95
+                    bg-cyan-400/10
                     border border-cyan-400/20
                     shadow-2xl shadow-black/30
                     p-6

@@ -111,7 +111,7 @@ pub fn StudentList(
 
                                     view! {
                                         <div class="
-                                        p-4 px-5 bg-cyan-500/10 backdrop-blur-md text-white rounded-3xl
+                                        p-4 px-5 bg-cyan-400/10 backdrop-blur-md text-white rounded-3xl
                                         border border-cyan-400/20 shadow-lg shadow-black/10
                                         ">
                                             // Parte superior

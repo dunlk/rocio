@@ -116,7 +116,7 @@ pub fn AppLayout() -> impl IntoView {
         </div>
         <div class=move || {
             format!(
-                "blur-[300px] z-0 absolute aspect-square w-[1000px] rounded-full bg-pink-500 \
+                "blur-[300px] z-0 absolute aspect-square w-[1000px] rounded-full bg-pink-500/80 \
                 transition-transform duration-700 ease-in-out {}",
                 pink_position(),
             )

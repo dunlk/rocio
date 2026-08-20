@@ -54,7 +54,11 @@ pub fn ActivitiesList(
                 activity.id,
                 activity.name.clone(),
                 activity.amount.to_bits(),
-                activity.description.clone()
+                activity.description.clone(),
+                activity.activity_type.clone(),
+                activity.due_date.clone(),
+                activity.activities_date.clone()
+
             )
             children=move |activity| {
                 let activity = RwSignal::new(activity);

@@ -28,9 +28,10 @@ pub fn CardActivity(
     view! {
         <div class="
             p-4 px-5 animate-in fade-in duration-700
-            bg-cyan-500/10 backdrop-blur-md
+            bg-cyan-400/10
+            backdrop-blur-md
             text-white rounded-3xl
-            border border-cyan-400/20
+            border border-cyan-500/30
             shadow-lg shadow-black/10
         ">
             // Parte superior
